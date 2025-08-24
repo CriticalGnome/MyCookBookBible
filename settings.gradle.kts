@@ -21,3 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "My CookBook Bible"
 include(":app")
+include(":domain")
+include(":data")
