@@ -60,26 +60,32 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    // Coil
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
     // Dagger
     implementation(libs.dagger)
     ksp(libs.dagger.compiler)
     // Hilt
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)
+    // Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+    testImplementation(libs.room.testing)
     // Junit 5
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.params)
     testRuntimeOnly(libs.junit.jupiter.engine)
+    androidTestImplementation(libs.junit.jupiter.api)
+    androidTestImplementation(libs.android.test.core)
+    androidTestRuntimeOnly(libs.android.test.runner)
     // Coroutines
     testImplementation(libs.kotlinx.coroutines.test)
     // MockK
     testImplementation(libs.mockk)
+    androidTestImplementation(libs.mockk.android)
     // Core Android
     androidTestImplementation(libs.runner)
-    // Junit 5 Android
-    androidTestImplementation(libs.junit.jupiter.api)
-    androidTestImplementation(libs.android.test.core)
-    androidTestRuntimeOnly(libs.android.test.runner)
-    // MockK Android
-    androidTestImplementation(libs.mockk.android)
 }

@@ -1,4 +1,4 @@
-package com.criticalgnome.cookbook
+package com.criticalgnome.cookbook.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
