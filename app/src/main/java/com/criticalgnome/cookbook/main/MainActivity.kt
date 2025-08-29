@@ -1,16 +1,13 @@
 package com.criticalgnome.cookbook.main
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.criticalgnome.cookbook.ui.screen.MainScreen
 import com.criticalgnome.cookbook.ui.theme.MyCookBookBibleTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,29 +18,31 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyCookBookBibleTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                MainScreen()
             }
         }
     }
 }
 
+@Preview(
+    name = "Light Theme",
+    showSystemUi = true
+)
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+private fun MainScreenPreviewSystemLight() {
+    MyCookBookBibleTheme(darkTheme = false) {
+        MainScreen()
+    }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    name = "Dark Theme",
+    showSystemUi = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
-fun GreetingPreview() {
-    MyCookBookBibleTheme {
-        Greeting("Android")
+private fun MainScreenPreviewSystemDark() {
+    MyCookBookBibleTheme(darkTheme = true) {
+        MainScreen()
     }
 }

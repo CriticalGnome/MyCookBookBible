@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">My CookBook Bible</string>
+    <string name="cd_menu">Menu</string>
+    <string name="cd_profile">Profile</string>
+    <string name="main_screen_header">My Cookbook Bible</string>
+    <string name="bottom_menu_home">Home</string>
+    <string name="bottom_menu_favorites">Favorites</string>
+    <string name="bottom_menu_photos">Photos</string>
+    <string name="bottom_menu_shopping">Shopping</string>
 </resources>
