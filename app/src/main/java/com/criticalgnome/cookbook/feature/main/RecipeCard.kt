@@ -1,6 +1,7 @@
 package com.criticalgnome.cookbook.feature.main
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -28,11 +29,14 @@ import com.criticalgnome.domain.entity.Recipe
 fun RecipeCard(
     modifier: Modifier = Modifier,
     recipe: Recipe,
+    onClick: (Long) -> Unit = {},
 ) {
     Card(
-        modifier = modifier.padding(all = 4.dp),
+        modifier = modifier
+            .padding(all = 4.dp)
+            .clickable(onClick = { onClick(recipe.id) }),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
         Box {
             Image(

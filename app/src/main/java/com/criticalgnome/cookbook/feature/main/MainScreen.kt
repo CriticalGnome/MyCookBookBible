@@ -38,7 +38,7 @@ import kotlinx.coroutines.flow.flowOf
 fun MainScreen(
     modifier: Modifier = Modifier,
     viewModel: MainViewModel,
-    navController: NavController
+    navController: NavController,
 ) {
     val state by viewModel.state.collectAsState()
     Scaffold(
@@ -77,7 +77,10 @@ fun MainScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            RecipeCardList(recipes = state.recipes)
+            RecipeCardList(
+                recipes = state.recipes,
+                onItemClick = { navController.navigate(NavigationTarget.EditRecipe(recipeId = it)) }
+            )
             if (state.isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center)
@@ -87,11 +90,8 @@ fun MainScreen(
     }
 }
 
-@Preview(
-    name = "Light Theme",
-    showSystemUi = true
-)
 @Composable
+@Preview(name = "Light Theme", showSystemUi = true)
 @SuppressLint("ViewModelConstructorInComposable")
 private fun MainScreenPreviewLight() {
     MyCookBookBibleTheme(darkTheme = false) {
@@ -102,12 +102,8 @@ private fun MainScreenPreviewLight() {
     }
 }
 
-@Preview(
-    name = "Dark Theme",
-    showSystemUi = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES
-)
 @Composable
+@Preview(name = "Dark Theme", showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @SuppressLint("ViewModelConstructorInComposable")
 private fun MainScreenPreviewDark() {
     MyCookBookBibleTheme(darkTheme = true) {
@@ -118,7 +114,7 @@ private fun MainScreenPreviewDark() {
     }
 }
 
-class PreviewMainViewModel : MainViewModel(
+private class PreviewMainViewModel : MainViewModel(
     recipeRepository = StubRecipeRepository(),
     dispatchersManager = DispatchersManagerImpl(),
 ) {
@@ -128,7 +124,7 @@ class PreviewMainViewModel : MainViewModel(
 private class StubRecipeRepository : RecipeRepository {
     override fun allRecipesFlow() = flowOf(recipesStub)
     override suspend fun getRecipe(id: Long): Recipe? = null
-    override suspend fun addRecipe(recipe: Recipe): Long = 0L
+    override suspend fun saveRecipe(recipe: Recipe): Long = 0L
     override suspend fun deleteRecipe(id: Long) = Unit
 }
 

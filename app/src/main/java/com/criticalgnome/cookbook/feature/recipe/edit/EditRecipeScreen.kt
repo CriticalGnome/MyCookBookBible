@@ -1,5 +1,6 @@
 package com.criticalgnome.cookbook.feature.recipe.edit
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,31 +11,76 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.criticalgnome.cookbook.R
+import com.criticalgnome.cookbook.di.DispatchersManagerImpl
 import com.criticalgnome.cookbook.feature.common.AppTopBar
 import com.criticalgnome.cookbook.feature.common.BottomBar
 import com.criticalgnome.cookbook.ui.theme.MyCookBookBibleTheme
+import com.criticalgnome.domain.entity.Recipe
+import com.criticalgnome.domain.repository.RecipeRepository
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 
 @Composable
 fun EditRecipeScreen(
     modifier: Modifier = Modifier,
-    viewModel: EditRecipeViewModel = EditRecipeViewModel(),
-    navController: NavController = rememberNavController(),
+    viewModel: EditRecipeViewModel,
+    navController: NavController,
+    recipeId: Long? = null,
 ) {
+    val scope = rememberCoroutineScope()
+    val state by viewModel.state.collectAsState()
+    val event by viewModel.event.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val focusManager = LocalFocusManager.current
+
+    LaunchedEffect(event) {
+        when (event) {
+            is EditRecipeViewModel.Event.RecipeSaved -> {
+                scope.launch {
+                    snackbarHostState.showSnackbar(
+                        message = "Recipe successfully saved",
+                        actionLabel = "OK",
+                        duration = SnackbarDuration.Short,
+                    )
+                }
+            }
+
+            null -> { /* No op */
+            }
+        }
+        viewModel.consumeEvent()
+    }
+
+    if (recipeId != null) {
+        viewModel.loadRecipe(recipeId)
+    }
+
     Scaffold(
         modifier = modifier
             .fillMaxSize(),
@@ -49,7 +95,8 @@ fun EditRecipeScreen(
             BottomBar(
                 onNavigate = { route -> navController.navigate(route) }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -57,22 +104,20 @@ fun EditRecipeScreen(
                 .padding(paddingValues)
                 .padding(all = 8.dp)
         ) {
-            var title = ""
             val titleMaxChars = 100
-            var description = ""
             val descriptionMaxChars = 1000
             Text(text = "Title")
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = title,
+                value = state.title,
                 placeholder = { Text(text = "Enter title here...") },
-                onValueChange = { if (it.length <= titleMaxChars) title = it },
+                onValueChange = { if (it.length <= titleMaxChars) viewModel.title = it },
                 supportingText = {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.End,
-                        text = "${title.length}/$titleMaxChars",
-
+                        text = "${state.title.length}/$titleMaxChars",
+                        color = if (state.title.length < titleMaxChars) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.error,
                         )
                 },
                 keyboardOptions = KeyboardOptions(
@@ -80,22 +125,22 @@ fun EditRecipeScreen(
                     imeAction = ImeAction.Next
                 ),
                 keyboardActions = KeyboardActions(
-                    onNext = { /* действие при нажатии Next */ }
+                    onNext = { /* do on Next */ }
                 ),
                 maxLines = 1,
             )
             Text(text = "Description")
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = description,
+                value = state.description,
                 placeholder = { Text(text = "Enter description here...") },
-                onValueChange = { if (it.length <= descriptionMaxChars) description = it },
+                onValueChange = { if (it.length <= descriptionMaxChars) viewModel.description = it },
                 supportingText = {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.End,
-                        text = "${description.length}/$descriptionMaxChars",
-
+                        text = "${state.description.length}/$descriptionMaxChars",
+                        color = if (state.description.length < descriptionMaxChars) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.error,
                         )
                 },
                 keyboardOptions = KeyboardOptions(
@@ -103,9 +148,9 @@ fun EditRecipeScreen(
                     imeAction = ImeAction.Next
                 ),
                 keyboardActions = KeyboardActions(
-                    onNext = { /* действие при нажатии Next */ }
+                    onNext = { /* do on Next */ }
                 ),
-                maxLines = 2,
+                maxLines = 4,
             )
             Text(text = "Ingredients")
             Text(text = "Cooking steps")
@@ -117,13 +162,20 @@ fun EditRecipeScreen(
                 ) {
                 Button(
                     modifier = Modifier.padding(horizontal = 4.dp),
-                    onClick = {}
+                    enabled = state.isSaveButtonEnabled,
+                    onClick = {
+                        focusManager.clearFocus()
+                        viewModel.saveRecipe()
+                    }
                 ) {
                     Text("Save")
                 }
                 OutlinedButton(
                     modifier = Modifier.padding(horizontal = 4.dp),
-                    onClick = {}
+                    onClick = {
+                        viewModel.clearFields()
+                        navController.navigateUp()
+                    }
                 ) {
                     Text("Cancel")
                 }
@@ -133,20 +185,37 @@ fun EditRecipeScreen(
 }
 
 @Composable
-@Preview(
-    name = "Light theme",
-    showSystemUi = true,
-)
+@Preview(name = "Light theme", showSystemUi = true)
+@SuppressLint("ViewModelConstructorInComposable")
 private fun EditRecipeScreenPreviewLight() {
     MyCookBookBibleTheme(darkTheme = false) {
-        EditRecipeScreen()
+        EditRecipeScreen(
+            viewModel = PreviewEditRecipeViewModel(),
+            navController = rememberNavController(),
+        )
     }
 }
 
 @Composable
 @Preview(name = "Dark theme", showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@SuppressLint("ViewModelConstructorInComposable")
 private fun EditRecipeScreenPreviewDark() {
     MyCookBookBibleTheme(darkTheme = true) {
-        EditRecipeScreen()
+        EditRecipeScreen(
+            viewModel = PreviewEditRecipeViewModel(),
+            navController = rememberNavController(),
+        )
     }
+}
+
+private class PreviewEditRecipeViewModel : EditRecipeViewModel(
+    recipeRepository = StubRecipeRepository(),
+    dispatchersManager = DispatchersManagerImpl(),
+)
+
+private class StubRecipeRepository : RecipeRepository {
+    override fun allRecipesFlow() = flowOf(emptyList<Recipe>())
+    override suspend fun getRecipe(id: Long): Recipe? = null
+    override suspend fun saveRecipe(recipe: Recipe): Long = 0L
+    override suspend fun deleteRecipe(id: Long) = Unit
 }

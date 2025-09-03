@@ -22,7 +22,7 @@ abstract class BaseViewModel<S : Any, E: Any>(initialState: S) : ViewModel() {
         _event.value = event
     }
 
-    protected fun consumeEvent() {
+    fun consumeEvent() {
         _event.value = null
     }
 }

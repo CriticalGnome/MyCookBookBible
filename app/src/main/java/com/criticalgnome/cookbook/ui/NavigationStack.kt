@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.criticalgnome.cookbook.feature.main.MainScreen
 import com.criticalgnome.cookbook.feature.main.MainViewModel
 import com.criticalgnome.cookbook.feature.recipe.edit.EditRecipeScreen
@@ -44,10 +45,11 @@ fun NavigationStack(
         composable<NavigationTarget.Favorites> {}
         composable<NavigationTarget.Photos> {}
         composable<NavigationTarget.Shopping> {}
-        composable<NavigationTarget.EditRecipe> {
+        composable<NavigationTarget.EditRecipe> { target ->
             EditRecipeScreen(
                 viewModel = editRecipeViewModel,
                 navController = navController,
+                recipeId = target.toRoute<NavigationTarget.EditRecipe>().recipeId,
             )
         }
     }

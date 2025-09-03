@@ -21,6 +21,7 @@ import com.criticalgnome.domain.entity.Recipe
 fun RecipeCardList(
     modifier: Modifier = Modifier,
     recipes: List<Recipe>,
+    onItemClick: (Long) -> Unit = {}
 ) {
     Box(
         modifier = modifier.fillMaxSize()
@@ -29,10 +30,13 @@ fun RecipeCardList(
             LazyVerticalStaggeredGrid (
                 modifier = modifier.fillMaxSize(),
                 columns = StaggeredGridCells.Adaptive(150.dp),
-                contentPadding = PaddingValues(8.dp)
+                contentPadding = PaddingValues(8.dp),
             ) {
                 items(recipes.size) { it ->
-                    RecipeCard(recipe = recipes[it])
+                    RecipeCard(
+                        recipe = recipes[it],
+                        onClick = onItemClick,
+                    )
                 }
             }
         } else {
