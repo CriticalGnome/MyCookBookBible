@@ -10,10 +10,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+open class MainViewModel @Inject constructor(
     private val recipeRepository: RecipeRepository,
     private val dispatchersManager: DispatchersManager,
-): BaseViewModel<MainViewModel.State, MainViewModel.Event>(State()) {
+) : BaseViewModel<MainViewModel.State, MainViewModel.Event>(State()) {
 
     data class State(
         val isLoading: Boolean = false,
@@ -27,12 +27,14 @@ class MainViewModel @Inject constructor(
     }
 
     fun loadRecipes() {
-        setState { State::isLoading set true }
+        updateState { copy(isLoading = true) }
         viewModelScope.launch(dispatchersManager.io) {
             recipeRepository.allRecipesFlow().collect { recipes ->
-                setState {
-                    State::recipes set recipes
-                    State::isLoading set false
+                updateState {
+                    copy(
+                        isLoading = false,
+                        recipes = recipes,
+                    )
                 }
             }
         }

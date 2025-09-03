@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.criticalgnome.cookbook.ui.theme.MyCookBookBibleTheme
@@ -21,7 +22,9 @@ fun RecipeCardList(
     modifier: Modifier = Modifier,
     recipes: List<Recipe>,
 ) {
-    Box {
+    Box(
+        modifier = modifier.fillMaxSize()
+    ) {
         if (recipes.isNotEmpty()) {
             LazyVerticalStaggeredGrid (
                 modifier = modifier.fillMaxSize(),
@@ -35,9 +38,10 @@ fun RecipeCardList(
         } else {
             Text(
                 modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(PaddingValues(horizontal = 8.dp)),
+                    .padding(PaddingValues(horizontal = 8.dp))
+                    .align(Alignment.Center),
                 style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
                 text = "Your recipe book is empty. It's time to add your first record!"
             )
         }
