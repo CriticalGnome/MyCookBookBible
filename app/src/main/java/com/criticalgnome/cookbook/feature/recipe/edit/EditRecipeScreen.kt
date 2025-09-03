@@ -1,4 +1,4 @@
-package com.criticalgnome.cookbook.ui.screen
+package com.criticalgnome.cookbook.feature.recipe.edit
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
@@ -22,20 +22,18 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.criticalgnome.cookbook.R
-import com.criticalgnome.cookbook.recipe.edit.EditRecipeViewModel
-import com.criticalgnome.cookbook.ui.element.AppTopBar
-import com.criticalgnome.cookbook.ui.element.BottomBar
+import com.criticalgnome.cookbook.feature.common.AppTopBar
+import com.criticalgnome.cookbook.feature.common.BottomBar
 import com.criticalgnome.cookbook.ui.theme.MyCookBookBibleTheme
 
 @Composable
 fun EditRecipeScreen(
     modifier: Modifier = Modifier,
-    currentRoute: String = "home",
     viewModel: EditRecipeViewModel = EditRecipeViewModel(),
-    onNavigate: (String) -> Unit = {},
-    onMenuClick: () -> Unit = {},
-    onAvatarClick: () -> Unit = {},
+    navController: NavController = rememberNavController(),
 ) {
     Scaffold(
         modifier = modifier
@@ -43,14 +41,13 @@ fun EditRecipeScreen(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.main_screen_header),
-                onMenuClick = onMenuClick,
-                onAvatarClick = onAvatarClick
+                onMenuClick = {}, // TODO Open menu
+                onAvatarClick = {}, // TODO Open profile screen
             )
         },
         bottomBar = {
             BottomBar(
-                currentRoute = currentRoute,
-                onNavigate = onNavigate
+                onNavigate = { route -> navController.navigate(route) }
             )
         }
     ) { paddingValues ->

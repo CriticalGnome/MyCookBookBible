@@ -1,4 +1,4 @@
-package com.criticalgnome.cookbook.main
+package com.criticalgnome.cookbook.feature.main
 
 import androidx.lifecycle.viewModelScope
 import com.criticalgnome.cookbook.base.BaseViewModel

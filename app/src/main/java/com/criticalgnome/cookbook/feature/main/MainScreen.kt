@@ -1,4 +1,4 @@
-package com.criticalgnome.cookbook.ui.screen
+package com.criticalgnome.cookbook.feature.main
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
@@ -20,13 +20,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.criticalgnome.cookbook.R
 import com.criticalgnome.cookbook.di.DispatchersManagerImpl
-import com.criticalgnome.cookbook.main.MainViewModel
-import com.criticalgnome.cookbook.ui.element.AppTopBar
-import com.criticalgnome.cookbook.ui.element.BottomBar
-import com.criticalgnome.cookbook.ui.element.RecipeCardList
+import com.criticalgnome.cookbook.feature.common.AppTopBar
+import com.criticalgnome.cookbook.feature.common.BottomBar
+import com.criticalgnome.cookbook.ui.NavigationTarget
 import com.criticalgnome.cookbook.ui.theme.MyCookBookBibleTheme
 import com.criticalgnome.domain.entity.Recipe
 import com.criticalgnome.domain.repository.RecipeRepository
@@ -37,11 +37,8 @@ import kotlinx.coroutines.flow.flowOf
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    currentRoute: String = "home",
-    viewModel: MainViewModel = viewModel(),
-    onNavigate: (String) -> Unit = {},
-    onMenuClick: () -> Unit = {},
-    onAvatarClick: () -> Unit = {},
+    viewModel: MainViewModel,
+    navController: NavController
 ) {
     val state by viewModel.state.collectAsState()
     Scaffold(
@@ -50,19 +47,19 @@ fun MainScreen(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.main_screen_header),
-                onMenuClick = onMenuClick,
-                onAvatarClick = onAvatarClick
+                onMenuClick = {}, // TODO Open menu
+                onAvatarClick = {}, // TODO Open profile screen
             )
         },
         bottomBar = {
             BottomBar(
-                currentRoute = currentRoute,
-                onNavigate = onNavigate
+                currentRoute = NavigationTarget.Home,
+                onNavigate = { route -> navController.navigate(route) },
             )
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { onNavigate("add") },
+                onClick = { navController.navigate(NavigationTarget.EditRecipe()) },
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
             ) {
@@ -98,7 +95,10 @@ fun MainScreen(
 @SuppressLint("ViewModelConstructorInComposable")
 private fun MainScreenPreviewLight() {
     MyCookBookBibleTheme(darkTheme = false) {
-        MainScreen(viewModel = PreviewMainViewModel())
+        MainScreen(
+            viewModel = PreviewMainViewModel(),
+            navController = rememberNavController(),
+        )
     }
 }
 
@@ -111,7 +111,10 @@ private fun MainScreenPreviewLight() {
 @SuppressLint("ViewModelConstructorInComposable")
 private fun MainScreenPreviewDark() {
     MyCookBookBibleTheme(darkTheme = true) {
-        MainScreen(viewModel = PreviewMainViewModel())
+        MainScreen(
+            viewModel = PreviewMainViewModel(),
+            navController = rememberNavController(),
+        )
     }
 }
 

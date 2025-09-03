@@ -1,4 +1,4 @@
-package com.criticalgnome.cookbook.ui.element
+package com.criticalgnome.cookbook.feature.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -43,7 +43,9 @@ fun RecipeCard(
             )
             if (recipe.isFavorite) {
                 Icon(
-                    modifier = Modifier.padding(all = 8.dp).align(Alignment.TopEnd),
+                    modifier = Modifier
+                        .padding(all = 8.dp)
+                        .align(Alignment.TopEnd),
                     tint = MaterialTheme.colorScheme.primary,
                     imageVector = Icons.Filled.Favorite,
                     contentDescription = "Favorite",

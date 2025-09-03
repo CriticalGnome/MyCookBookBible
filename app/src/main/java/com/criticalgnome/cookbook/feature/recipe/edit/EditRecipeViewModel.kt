@@ -1,4 +1,4 @@
-package com.criticalgnome.cookbook.recipe.edit
+package com.criticalgnome.cookbook.feature.recipe.edit
 
 import com.criticalgnome.cookbook.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

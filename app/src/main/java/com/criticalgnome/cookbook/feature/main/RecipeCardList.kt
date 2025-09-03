@@ -1,4 +1,4 @@
-package com.criticalgnome.cookbook.ui.element
+package com.criticalgnome.cookbook.feature.main
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -40,9 +40,10 @@ fun RecipeCardList(
                 modifier = Modifier
                     .padding(PaddingValues(horizontal = 8.dp))
                     .align(Alignment.Center),
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
-                text = "Your recipe book is empty. It's time to add your first record!"
+                text = "Your recipe book is empty. Looks like it's a good time to add your first record!"
             )
         }
     }

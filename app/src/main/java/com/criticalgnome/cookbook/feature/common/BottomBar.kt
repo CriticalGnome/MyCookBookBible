@@ -1,4 +1,4 @@
-package com.criticalgnome.cookbook.ui.element
+package com.criticalgnome.cookbook.feature.common
 
 import android.content.res.Configuration
 import androidx.annotation.StringRes
@@ -15,17 +15,19 @@ import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.criticalgnome.cookbook.R
+import com.criticalgnome.cookbook.ui.NavigationTarget
 import com.criticalgnome.cookbook.ui.theme.MyCookBookBibleTheme
 
 @Composable
 fun BottomBar(
-    currentRoute: String,
-    onNavigate: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    currentRoute: NavigationTarget? = null,
+    onNavigate: (NavigationTarget) -> Unit = {},
 ) {
     NavigationBar(
         modifier = modifier,
@@ -64,29 +66,29 @@ fun BottomBar(
 
 private data class BottomNavItem(
     @param:StringRes val title: Int,
-    val route: String,
-    val icon: androidx.compose.ui.graphics.vector.ImageVector
+    val route: NavigationTarget,
+    val icon: ImageVector
 )
 
 private val bottomNavItems = listOf(
     BottomNavItem(
         title = R.string.bottom_menu_home,
-        route = "home",
+        route = NavigationTarget.Home,
         icon = Icons.Filled.Home
     ),
     BottomNavItem(
         title = R.string.bottom_menu_favorites,
-        route = "favorites",
+        route = NavigationTarget.Favorites,
         icon = Icons.Filled.Favorite
     ),
     BottomNavItem(
         title = R.string.bottom_menu_photos,
-        route = "photos",
+        route = NavigationTarget.Photos,
         icon = Icons.Filled.Star
     ),
     BottomNavItem(
         title = R.string.bottom_menu_shopping,
-        route = "shopping",
+        route = NavigationTarget.Photos,
         icon = Icons.Filled.ShoppingCart
     )
 )
@@ -95,10 +97,7 @@ private val bottomNavItems = listOf(
 @Composable
 private fun BottomBarPreviewLight() {
     MyCookBookBibleTheme(darkTheme = false) {
-        BottomBar(
-            currentRoute = "home",
-            onNavigate = {}
-        )
+        BottomBar(currentRoute = NavigationTarget.Home)
     }
 }
 
@@ -109,9 +108,6 @@ private fun BottomBarPreviewLight() {
 @Composable
 private fun BottomBarPreviewDark() {
     MyCookBookBibleTheme(darkTheme = true) {
-        BottomBar(
-            currentRoute = "home",
-            onNavigate = {}
-        )
+        BottomBar(currentRoute = NavigationTarget.Home)
     }
 }
