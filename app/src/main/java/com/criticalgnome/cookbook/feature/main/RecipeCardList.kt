@@ -11,9 +11,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.criticalgnome.cookbook.R
 import com.criticalgnome.cookbook.ui.theme.MyCookBookBibleTheme
 import com.criticalgnome.domain.entity.Recipe
 
@@ -47,7 +49,7 @@ fun RecipeCardList(
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
-                text = "Your recipe book is empty. Looks like it's a good time to add your first record!"
+                text = stringResource(R.string.recipe_list_is_empty)
             )
         }
     }

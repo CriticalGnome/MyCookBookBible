@@ -65,7 +65,7 @@ fun MainScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Add Recipe"
+                    contentDescription = stringResource(R.string.fab_add_recipe)
                 )
 
             }

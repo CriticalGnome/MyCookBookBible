@@ -59,13 +59,15 @@ fun EditRecipeScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val focusManager = LocalFocusManager.current
 
+    val successMessage = stringResource(R.string.recipe_successfully_saved)
+    val ok = stringResource(android.R.string.ok)
     LaunchedEffect(event) {
         when (event) {
             is EditRecipeViewModel.Event.RecipeSaved -> {
                 scope.launch {
                     snackbarHostState.showSnackbar(
-                        message = "Recipe successfully saved",
-                        actionLabel = "OK",
+                        message = successMessage,
+                        actionLabel = ok,
                         duration = SnackbarDuration.Short,
                     )
                 }
@@ -77,16 +79,15 @@ fun EditRecipeScreen(
         viewModel.consumeEvent()
     }
 
-    if (recipeId != null) {
-        viewModel.loadRecipe(recipeId)
-    }
+    if (recipeId != null) viewModel.loadRecipe(recipeId)
 
+    val title = stringResource(if (recipeId != null) R.string.edit_recipe_screen_title else R.string.create_recipe_screen_title)
     Scaffold(
         modifier = modifier
             .fillMaxSize(),
         topBar = {
             AppTopBar(
-                title = stringResource(R.string.main_screen_header),
+                title = title,
                 onMenuClick = {}, // TODO Open menu
                 onAvatarClick = {}, // TODO Open profile screen
             )
@@ -106,11 +107,11 @@ fun EditRecipeScreen(
         ) {
             val titleMaxChars = 100
             val descriptionMaxChars = 1000
-            Text(text = "Title")
+            Text(text = stringResource(R.string.title_label))
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = state.title,
-                placeholder = { Text(text = "Enter title here...") },
+                placeholder = { Text(text = stringResource(R.string.title_placeholder)) },
                 onValueChange = { if (it.length <= titleMaxChars) viewModel.title = it },
                 supportingText = {
                     Text(
@@ -118,7 +119,7 @@ fun EditRecipeScreen(
                         textAlign = TextAlign.End,
                         text = "${state.title.length}/$titleMaxChars",
                         color = if (state.title.length < titleMaxChars) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.error,
-                        )
+                    )
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
@@ -129,11 +130,11 @@ fun EditRecipeScreen(
                 ),
                 maxLines = 1,
             )
-            Text(text = "Description")
+            Text(text = stringResource(R.string.description_label))
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = state.description,
-                placeholder = { Text(text = "Enter description here...") },
+                placeholder = { Text(text = stringResource(R.string.description_placeholder)) },
                 onValueChange = { if (it.length <= descriptionMaxChars) viewModel.description = it },
                 supportingText = {
                     Text(
@@ -141,7 +142,7 @@ fun EditRecipeScreen(
                         textAlign = TextAlign.End,
                         text = "${state.description.length}/$descriptionMaxChars",
                         color = if (state.description.length < descriptionMaxChars) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.error,
-                        )
+                    )
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
@@ -152,9 +153,9 @@ fun EditRecipeScreen(
                 ),
                 maxLines = 4,
             )
-            Text(text = "Ingredients")
-            Text(text = "Cooking steps")
-            Text(text = "Photos")
+            Text(text = stringResource(R.string.ingredients_label))
+            Text(text = stringResource(R.string.cooking_steps_label))
+            Text(text = stringResource(R.string.photos_label))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
@@ -168,7 +169,7 @@ fun EditRecipeScreen(
                         viewModel.saveRecipe()
                     }
                 ) {
-                    Text("Save")
+                    Text(stringResource(R.string.save_button))
                 }
                 OutlinedButton(
                     modifier = Modifier.padding(horizontal = 4.dp),
@@ -177,7 +178,7 @@ fun EditRecipeScreen(
                         navController.navigateUp()
                     }
                 ) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel_button))
                 }
             }
         }

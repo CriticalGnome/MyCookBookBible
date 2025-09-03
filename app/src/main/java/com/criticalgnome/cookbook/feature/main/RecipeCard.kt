@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.criticalgnome.cookbook.R
@@ -42,7 +43,7 @@ fun RecipeCard(
             Image(
                 modifier = Modifier.wrapContentHeight(),
                 painter = painterResource(R.mipmap.sample),
-                contentDescription = "Recipe Photo",
+                contentDescription = stringResource(R.string.cd_recipe_photo),
                 contentScale = ContentScale.Crop,
             )
             if (recipe.isFavorite) {
@@ -52,7 +53,7 @@ fun RecipeCard(
                         .align(Alignment.TopEnd),
                     tint = MaterialTheme.colorScheme.primary,
                     imageVector = Icons.Filled.Favorite,
-                    contentDescription = "Favorite",
+                    contentDescription = stringResource(R.string.favorite),
                 )
             }
         }
@@ -68,7 +69,7 @@ fun RecipeCard(
                 Text(
                     modifier = modifier.padding(top = 4.dp),
                     style = MaterialTheme.typography.labelSmall,
-                    text = "Rating: ${it / 2}.${(it % 2) * 5} stars"
+                    text = stringResource(R.string.rating_stars, it / 2, (it % 2) * 5)
                 )
             }
             recipe.description?.let {
