@@ -22,9 +22,14 @@ class RecipeRepositoryImpl @Inject constructor(
         return recipeDao.allRecipesFlow().map { it.map { recipeWithDetails -> recipeWithDetails.asDomain } }
     }
 
-    override suspend fun addRecipe(recipe: Recipe): Long {
+    override suspend fun saveRecipe(recipe: Recipe): Long {
         val recipeEntity = recipe.asEntity
-        return recipeDao.insertRecipe(recipeEntity)
+        return if (recipeEntity.id == 0L) {
+            recipeDao.insertRecipe(recipeEntity)
+        } else {
+            recipeDao.updateRecipe(recipeEntity)
+            recipeEntity.id
+        }
     }
 
     override suspend fun deleteRecipe(id: Long) {
