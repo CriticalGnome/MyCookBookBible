@@ -1,10 +1,31 @@
 <resources>
     <string name="app_name">My CookBook Bible</string>
+    <!-- App bar -->
     <string name="cd_menu">Menu</string>
     <string name="cd_profile">Profile</string>
-    <string name="main_screen_header">My Cookbook Bible</string>
+    <!-- Bottom bar -->
     <string name="bottom_menu_home">Home</string>
     <string name="bottom_menu_favorites">Favorites</string>
     <string name="bottom_menu_photos">Photos</string>
     <string name="bottom_menu_shopping">Shopping</string>
+    <!-- Main screen -->
+    <string name="main_screen_header">My Cookbook Bible</string>
+    <string name="fab_add_recipe">Add Recipe</string>
+    <string name="recipe_list_is_empty">Your recipe book is empty. Looks like it\'s a good time to add your first record!</string>
+    <string name="cd_recipe_photo">Recipe Photo</string>
+    <string name="favorite">Favorite</string>
+    <string name="rating_stars">Rating: %1$d.%2$d stars</string>
+    <string name="recipe_successfully_saved">Recipe successfully saved</string>
+    <!-- Edit recipe screen -->
+    <string name="create_recipe_screen_title">Create new recipe</string>
+    <string name="edit_recipe_screen_title">Edit recipe</string>
+    <string name="title_label">Title</string>
+    <string name="title_placeholder">Enter title here…</string>
+    <string name="description_label">Description</string>
+    <string name="description_placeholder">Enter description here…</string>
+    <string name="ingredients_label">Ingredients</string>
+    <string name="cooking_steps_label">Cooking steps</string>
+    <string name="photos_label">Photos</string>
+    <string name="save_button">Save</string>
+    <string name="cancel_button">Cancel</string>
 </resources>
