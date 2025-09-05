@@ -31,3 +31,10 @@ class DispatchersManagerImpl @Inject constructor() : DispatchersManager {
     override val default = Dispatchers.Default
     override val unconfined = Dispatchers.Unconfined
 }
+
+class TestDispatchersManagerImpl : DispatchersManager {
+    override val main = Dispatchers.Unconfined
+    override val io = Dispatchers.Unconfined
+    override val default = Dispatchers.Unconfined
+    override val unconfined = Dispatchers.Unconfined
+}

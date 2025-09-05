@@ -132,10 +132,10 @@ private val recipesStub: List<Recipe>
     get() = (1..20).mapIndexed { index, _ ->
         Recipe(
             id = index.toLong(),
-            title = "Recipe #1",
+            title = "Recipe #$index",
             description = descriptionStub,
             comment = null,
-            rating = 9,
+            rating = (4..10).random(),
             isFavorite = true,
             ingredients = emptyList(),
             steps = emptyList(),
@@ -147,7 +147,7 @@ private val descriptionStub: String
     get() {
         val loremIpsum =
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tempor enim sit amet nisl blandit sagittis. Praesent non sapien ac dolor mollis dignissim at nec diam. Nunc enim mi, porttitor eget arcu ut, gravida tincidunt mauris. Maecenas nibh neque, tempus eu congue vel, imperdiet vel erat. Aenean rutrum efficitur ex. Phasellus commodo dictum facilisis. Proin pellentesque aliquet fermentum. Etiam congue tincidunt metus eu commodo. Pellentesque mollis lacus aliquet tincidunt imperdiet. Praesent pharetra lorem sed urna pellentesque, sit amet fringilla metus sodales. Sed ultrices faucibus mattis. Vivamus in risus eu velit pulvinar semper. Donec libero ligula, feugiat at est in, tempus."
-        val length = (5..50).random()
+        val length = (5..20).random()
         val words = loremIpsum.split(" ")
         return words.take(length).joinToString(" ") + if (length < words.size) "..." else ""
     }
